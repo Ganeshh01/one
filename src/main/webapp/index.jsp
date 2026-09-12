@@ -181,8 +181,8 @@ footer{background:var(--ink);color:#fff;padding:58px 0 24px}
 <header>
   <div class="container header-inner">
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="mobile-toggle icon-btn" id="mobileToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
-      <a class="brand" href="#"><span class="brand-mark"><i class="fas fa-n"></i></span><span>Nexus<span class="accent">Shop</span></span></a>
+      <button class="mobile-toggle icon-btn" id="mobileToggle" aria-label="Toggle menu"><em class="fas fa-bars"></em></button>
+      <a class="brand" href="#"><span class="brand-mark"><em class="fas fa-n"></em></span><span>Nexus<span class="accent">Shop</span></span></a>
     </div>
     <nav class="main-nav" aria-label="Main navigation">
       <ul>
