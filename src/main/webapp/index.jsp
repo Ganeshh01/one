@@ -1,5 +1,3 @@
-Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce homepage. It includes a clean, curated design with smooth animations for product cards, a working countdown timer, and interactive elements like a cart and newsletter signup.
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -867,6 +865,23 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
       animation: fadeUp .3s both;
     }
 
+    /* ===== TOAST (replaces alert) ===== */
+    .nx-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 9999;
+      box-shadow: 0 12px 30px #0004;
+      animation: fadeUp .3s both;
+    }
+
     /* ===== FOOTER ===== */
     footer {
       background: var(--ink);
@@ -943,7 +958,7 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
       justify-content: space-between;
     }
 
-    /* ===== MOBILE MENU ===== */
+    /* ===== MOBILE ===== */
     #mobileMenu {
       display: none;
     }
@@ -1182,7 +1197,7 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
 <header>
   <div class="container header-inner">
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="mobile-toggle icon-btn" id="mobileToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+      <button type="button" class="mobile-toggle icon-btn" id="mobileToggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
       <a class="brand" href="#"><span class="brand-mark"><i class="fas fa-n"></i></span><span>Nexus<span class="accent">Shop</span></span></a>
     </div>
     <nav class="main-nav" aria-label="Main navigation">
@@ -1195,10 +1210,16 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
       </ul>
     </nav>
     <div class="header-right">
-      <div class="search-wrap" role="search"><input type="search" id="searchInput" placeholder="Search..." aria-label="Search products"><button id="searchBtn" aria-label="Submit search"><i class="fas fa-search"></i></button></div>
-      <button class="icon-btn" aria-label="Account"><i class="far fa-user"></i></button>
-      <button class="icon-btn" aria-label="Wishlist"><i class="far fa-heart"></i></button>
-      <div class="cart-wrap"><button class="icon-btn" id="cartBtn" aria-label="Cart"><i class="fas fa-bag-shopping"></i></button><span class="badge-count" id="cartCount">0</span></div>
+      <div class="search-wrap" role="search">
+        <input type="search" id="searchInput" placeholder="Search..." aria-label="Search products">
+        <button type="button" id="searchBtn" aria-label="Submit search"><i class="fas fa-search"></i></button>
+      </div>
+      <button type="button" class="icon-btn" aria-label="Account"><i class="far fa-user"></i></button>
+      <button type="button" class="icon-btn" aria-label="Wishlist"><i class="far fa-heart"></i></button>
+      <div class="cart-wrap">
+        <button type="button" class="icon-btn" id="cartBtn" aria-label="Cart"><i class="fas fa-bag-shopping"></i></button>
+        <span class="badge-count" id="cartCount">0</span>
+      </div>
     </div>
   </div>
   <div id="mobileMenu">
@@ -1223,8 +1244,8 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
         <h1 class="display">Less noise.<br><em>Better</em> things.</h1>
         <p>Curated tech, fashion and everyday essentials designed to make your next purchase feel effortless.</p>
         <div class="hero-actions">
-          <button class="btn btn-lime" id="shopNow">Shop the collection <i class="fas fa-arrow-right"></i></button>
-          <button class="btn btn-light" id="exploreDeals">View today's deals</button>
+          <button type="button" class="btn btn-lime" id="shopNow">Shop the collection <i class="fas fa-arrow-right"></i></button>
+          <button type="button" class="btn btn-light" id="exploreDeals">View today's deals</button>
         </div>
         <div class="hero-note"><i class="fas fa-circle-check"></i> Free shipping · Easy returns · Secure checkout</div>
       </div>
@@ -1273,7 +1294,7 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
           <div class="timer-box"><div class="num" id="dealMinutes">00</div><div class="label">Mins</div></div>
           <div class="timer-box"><div class="num" id="dealSeconds">00</div><div class="label">Secs</div></div>
         </div>
-        <button class="btn btn-dark" id="buyDeal"><i class="fas fa-bag-shopping"></i> Add to cart</button>
+        <button type="button" class="btn btn-dark" id="buyDeal"><i class="fas fa-bag-shopping"></i> Add to cart</button>
       </div>
     </div>
   </div>
@@ -1290,10 +1311,10 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
   <div class="container">
     <div class="newsletter-wrap">
       <div><div class="eyebrow" style="color:#c8ff3d">Stay connected</div><h3 class="display">Good things,<br>occasionally.</h3><p>New arrivals, private offers and useful finds. No inbox clutter.</p></div>
-      <form id="newsletterForm" onsubmit="return false;">
+      <form id="newsletterForm" novalidate>
         <input type="email" id="newsletterEmail" placeholder="Your email address" aria-label="Email" required>
-        <button class="btn btn-lime" id="subscribeBtn">Subscribe <i class="fas fa-arrow-right"></i></button>
-        <div id="newsletterMsg"></div>
+        <button type="submit" class="btn btn-lime" id="subscribeBtn">Subscribe <i class="fas fa-arrow-right"></i></button>
+        <div id="newsletterMsg" role="status" aria-live="polite"></div>
       </form>
     </div>
   </div>
@@ -1306,7 +1327,12 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
       <div class="brand-col">
         <div class="brand"><span class="brand-mark"><i class="fas fa-n"></i></span><span>Nexus<span class="accent">Shop</span></span></div>
         <p>A modern e-commerce concept for better everyday shopping. Curated products, clean design, simple experience.</p>
-        <div class="socials"><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a></div>
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
       </div>
       <div class="col"><h5>Shop</h5><ul><li><a href="#products">Trending</a></li><li><a href="#categories">Categories</a></li><li><a href="#deals">Deals</a></li><li><a href="#">New arrivals</a></li></ul></div>
       <div class="col"><h5>Help</h5><ul><li><a href="#">Help center</a></li><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">Contact</a></li></ul></div>
@@ -1366,161 +1392,313 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
   const newsletterEmail = document.getElementById('newsletterEmail');
   const newsletterMsg = document.getElementById('newsletterMsg');
   const testimonialsList = document.getElementById('testimonialsList');
+  const cartBtn = document.getElementById('cartBtn');
 
   // ============================================================
-  // RENDER FUNCTIONS
+  // TOAST (safe replacement for alert)
+  // ============================================================
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'nx-toast';
+    toast.setAttribute('role', 'status');
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2200);
+  }
+
+  // ============================================================
+  // RENDER FUNCTIONS  (all DOM built via createElement + textContent)
   // ============================================================
   function renderCategories() {
-    categoriesGrid.innerHTML = '';
+    categoriesGrid.textContent = '';
     CATEGORIES.forEach(cat => {
       const el = document.createElement('div');
       el.className = 'cat-card';
-      el.innerHTML = `<div class="icon-wrap"><i class="fas ${cat.icon}"></i></div><h4>${cat.name}</h4><div class="count">${cat.count} items</div>`;
-      el.addEventListener('click', () => {
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+
+      const iconWrap = document.createElement('div');
+      iconWrap.className = 'icon-wrap';
+      const icon = document.createElement('i');
+      icon.className = 'fas ' + cat.icon;
+      icon.setAttribute('aria-hidden', 'true');
+      iconWrap.appendChild(icon);
+
+      const h4 = document.createElement('h4');
+      h4.textContent = cat.name;
+
+      const count = document.createElement('div');
+      count.className = 'count';
+      count.textContent = cat.count + ' items';
+
+      el.append(iconWrap, h4, count);
+
+      const activate = () => {
         searchInput.value = cat.name;
         filterProducts(cat.name);
         document.getElementById('products').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      el.addEventListener('click', activate);
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate();
+        }
       });
+
       categoriesGrid.appendChild(el);
     });
   }
 
-  function renderProducts(list) {
-    productsGrid.innerHTML = '';
-    if (!list.length) {
-      productsGrid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);">No products found.</p>`;
-      return;
+  function buildProductCard(p) {
+    const card = document.createElement('article');
+    card.className = 'product-card';
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'img-wrap';
+
+    const img = document.createElement('img');
+    img.src = p.img;
+    img.alt = p.title;
+    img.loading = 'lazy';
+    imgWrap.appendChild(img);
+
+    if (p.badge) {
+      const badge = document.createElement('span');
+      badge.className = 'badge' + (p.badge === 'Sale' ? ' sale' : '');
+      badge.textContent = p.badge;
+      imgWrap.appendChild(badge);
     }
-    list.forEach(p => {
-      const el = document.createElement('article');
-      el.className = 'product-card';
-      const badgeClass = p.badge === 'Sale' ? 'sale' : '';
-      const badgeHtml = p.badge ? `<span class="badge ${badgeClass}">${p.badge}</span>` : '';
-      const oldPriceHtml = p.oldPrice ? `<span class="old-price">$${p.oldPrice.toLocaleString()}</span>` : '';
-      const stars = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5 - Math.round(p.rating));
-      el.innerHTML = `
-        <div class="img-wrap">
-          <img src="${p.img}" alt="${escapeHtml(p.title)}" loading="lazy">
-          ${badgeHtml}
-          <button class="wish-btn" aria-label="Add to wishlist"><i class="far fa-heart"></i></button>
-        </div>
-        <div class="body">
-          <div class="category-tag">${p.category}</div>
-          <h5>${escapeHtml(p.title)}</h5>
-          <div class="price-row"><span class="price">$${p.price.toLocaleString()}</span>${oldPriceHtml}</div>
-          <div class="rating">${stars} <span>(${p.reviews})</span></div>
-        </div>
-        <div class="footer"><button class="add-btn" data-id="${p.id}"><i class="fas fa-cart-plus"></i> Add</button></div>
-      `;
-      productsGrid.appendChild(el);
+
+    const wishBtn = document.createElement('button');
+    wishBtn.type = 'button';
+    wishBtn.className = 'wish-btn';
+    wishBtn.setAttribute('aria-label', 'Add ' + p.title + ' to wishlist');
+    const wishIcon = document.createElement('i');
+    wishIcon.className = 'far fa-heart';
+    wishIcon.setAttribute('aria-hidden', 'true');
+    wishBtn.appendChild(wishIcon);
+    imgWrap.appendChild(wishBtn);
+
+    const body = document.createElement('div');
+    body.className = 'body';
+
+    const tag = document.createElement('div');
+    tag.className = 'category-tag';
+    tag.textContent = p.category;
+
+    const h5 = document.createElement('h5');
+    h5.textContent = p.title;
+
+    const priceRow = document.createElement('div');
+    priceRow.className = 'price-row';
+
+    const price = document.createElement('span');
+    price.className = 'price';
+    price.textContent = '$' + p.price.toLocaleString();
+    priceRow.appendChild(price);
+
+    if (p.oldPrice) {
+      const oldPrice = document.createElement('span');
+      oldPrice.className = 'old-price';
+      oldPrice.textContent = '$' + p.oldPrice.toLocaleString();
+      priceRow.appendChild(oldPrice);
+    }
+
+    const rating = document.createElement('div');
+    rating.className = 'rating';
+    const rounded = Math.round(p.rating);
+    rating.textContent = '★'.repeat(rounded) + '☆'.repeat(5 - rounded) + ' ';
+    const reviewsSpan = document.createElement('span');
+    reviewsSpan.textContent = '(' + p.reviews + ')';
+    rating.appendChild(reviewsSpan);
+
+    body.append(tag, h5, priceRow, rating);
+
+    const footer = document.createElement('div');
+    footer.className = 'footer';
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'add-btn';
+    addBtn.dataset.id = String(p.id);
+
+    const addIcon = document.createElement('i');
+    addIcon.className = 'fas fa-cart-plus';
+    addIcon.setAttribute('aria-hidden', 'true');
+    addBtn.appendChild(addIcon);
+    addBtn.appendChild(document.createTextNode(' Add'));
+
+    addBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      addToCart(p.id, this);
     });
 
-    productsGrid.querySelectorAll('.add-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const id = Number(this.dataset.id);
-        addToCart(id, this);
-      });
-    });
+    footer.appendChild(addBtn);
+    card.append(imgWrap, body, footer);
+    return card;
+  }
+
+  function renderProducts(list) {
+    productsGrid.textContent = '';
+    if (!list.length) {
+      const empty = document.createElement('p');
+      empty.style.cssText = 'grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);';
+      empty.textContent = 'No products found.';
+      productsGrid.appendChild(empty);
+      return;
+    }
+    list.forEach(p => productsGrid.appendChild(buildProductCard(p)));
+  }
+
+  function buildTestimonialCard(t) {
+    const card = document.createElement('div');
+    card.className = 'testimonial-card';
+
+    const stars = document.createElement('div');
+    stars.className = 'stars';
+    stars.textContent = '★'.repeat(t.stars) + '☆'.repeat(5 - t.stars);
+
+    const quote = document.createElement('blockquote');
+    quote.textContent = '\u201C' + t.text + '\u201D';
+
+    const author = document.createElement('div');
+    author.className = 'author';
+
+    const avatar = document.createElement('img');
+    avatar.className = 'avatar';
+    avatar.src = t.avatar;
+    avatar.alt = t.name;
+    avatar.loading = 'lazy';
+
+    const info = document.createElement('div');
+    const name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = t.name;
+    const role = document.createElement('div');
+    role.className = 'role';
+    role.textContent = t.role;
+    info.append(name, role);
+
+    author.append(avatar, info);
+    card.append(stars, quote, author);
+    return card;
   }
 
   function renderTestimonials() {
-    testimonialsList.innerHTML = '';
-    TESTIMONIALS.forEach(t => {
-      const stars = '★'.repeat(t.stars) + '☆'.repeat(5 - t.stars);
-      const el = document.createElement('div');
-      el.className = 'testimonial-card';
-      el.innerHTML = `
-        <div class="stars">${stars}</div>
-        <blockquote>“${escapeHtml(t.text)}”</blockquote>
-        <div class="author">
-          <img class="avatar" src="${t.avatar}" alt="${escapeHtml(t.name)}" loading="lazy">
-          <div><div class="name">${escapeHtml(t.name)}</div><div class="role">${escapeHtml(t.role)}</div></div>
-        </div>
-      `;
-      testimonialsList.appendChild(el);
-    });
+    testimonialsList.textContent = '';
+    TESTIMONIALS.forEach(t => testimonialsList.appendChild(buildTestimonialCard(t)));
   }
 
   // ============================================================
-  // UTILITY
+  // CART / FILTER
   // ============================================================
-  function escapeHtml(text) {
-    return String(text).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
-  }
-
   function updateCartCount() {
-    cartCountEl.textContent = cartCount;
+    cartCountEl.textContent = String(cartCount);
     cartCountEl.style.transform = 'scale(1.3)';
-    setTimeout(() => cartCountEl.style.transform = 'scale(1)', 200);
+    setTimeout(() => { cartCountEl.style.transform = 'scale(1)'; }, 200);
   }
 
   function addToCart(productId, btnEl) {
-    const p = PRODUCTS.find(x => x.id === productId);
-    if (!p) return;
+    const product = PRODUCTS.find(x => x.id === productId);
+    if (!product) return;
     cartCount++;
     updateCartCount();
+
     if (btnEl) {
-      const orig = btnEl.innerHTML;
-      btnEl.innerHTML = '<i class="fas fa-check"></i> Added';
+      const original = btnEl.textContent;
+      btnEl.textContent = '';
+      const checkIcon = document.createElement('i');
+      checkIcon.className = 'fas fa-check';
+      checkIcon.setAttribute('aria-hidden', 'true');
+      btnEl.appendChild(checkIcon);
+      btnEl.appendChild(document.createTextNode(' Added'));
       btnEl.classList.add('added');
       setTimeout(() => {
-        btnEl.innerHTML = orig;
+        btnEl.textContent = '';
+        const plusIcon = document.createElement('i');
+        plusIcon.className = 'fas fa-cart-plus';
+        plusIcon.setAttribute('aria-hidden', 'true');
+        btnEl.appendChild(plusIcon);
+        btnEl.appendChild(document.createTextNode(' Add'));
         btnEl.classList.remove('added');
+        void original; // preserve original for future if needed
       }, 1500);
     }
-    document.getElementById('cartBtn').style.color = 'var(--lime)';
-    setTimeout(() => document.getElementById('cartBtn').style.color = '', 400);
+
+    cartBtn.style.color = 'var(--lime)';
+    setTimeout(() => { cartBtn.style.color = ''; }, 400);
   }
 
   function filterProducts(query) {
     const q = String(query || '').trim().toLowerCase();
-    if (!q) { renderProducts(PRODUCTS); return; }
-    const filtered = PRODUCTS.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    if (!q) {
+      renderProducts(PRODUCTS);
+      return;
+    }
+    const filtered = PRODUCTS.filter(p =>
+      p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
+    );
     renderProducts(filtered);
   }
 
   // ============================================================
   // DEAL TIMER
   // ============================================================
-  (function setupDealTimer() {
-    const now = new Date();
-    const target = new Date(now.getTime() + (24 * 60 + 36) * 60 * 1000);
+  function setupDealTimer() {
+    const target = new Date(Date.now() + (24 * 60 + 36) * 60 * 1000);
+    const daysEl = document.getElementById('dealDays');
+    const hoursEl = document.getElementById('dealHours');
+    const minsEl = document.getElementById('dealMinutes');
+    const secsEl = document.getElementById('dealSeconds');
 
     function tick() {
-      const diff = target - new Date();
+      const diff = target - Date.now();
       if (diff <= 0) {
-        document.getElementById('dealDays').textContent = '0';
-        document.getElementById('dealHours').textContent = '00';
-        document.getElementById('dealMinutes').textContent = '00';
-        document.getElementById('dealSeconds').textContent = '00';
+        daysEl.textContent = '0';
+        hoursEl.textContent = '00';
+        minsEl.textContent = '00';
+        secsEl.textContent = '00';
         return;
       }
-      document.getElementById('dealDays').textContent = Math.floor(diff / (24 * 3600 * 1000));
-      document.getElementById('dealHours').textContent = String(Math.floor((diff % (24 * 3600 * 1000)) / (3600 * 1000))).padStart(2, '0');
-      document.getElementById('dealMinutes').textContent = String(Math.floor((diff % (3600 * 1000)) / (60 * 1000))).padStart(2, '0');
-      document.getElementById('dealSeconds').textContent = String(Math.floor((diff % (60 * 1000)) / 1000)).padStart(2, '0');
+      daysEl.textContent = String(Math.floor(diff / (24 * 3600 * 1000)));
+      hoursEl.textContent = String(Math.floor((diff % (24 * 3600 * 1000)) / (3600 * 1000))).padStart(2, '0');
+      minsEl.textContent = String(Math.floor((diff % (3600 * 1000)) / (60 * 1000))).padStart(2, '0');
+      secsEl.textContent = String(Math.floor((diff % (60 * 1000)) / 1000)).padStart(2, '0');
     }
     tick();
     setInterval(tick, 1000);
-  })();
+  }
 
   // ============================================================
   // EVENT BINDINGS
   // ============================================================
   searchBtn.addEventListener('click', () => filterProducts(searchInput.value));
-  searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') filterProducts(e.target.value); });
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      filterProducts(e.target.value);
+    }
+  });
 
   mobileToggle.addEventListener('click', () => {
     const isOpen = mobileMenu.style.display === 'block';
     mobileMenu.style.display = isOpen ? 'none' : 'block';
-    mobileToggle.innerHTML = isOpen ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+    mobileToggle.textContent = '';
+    const icon = document.createElement('i');
+    icon.className = isOpen ? 'fas fa-bars' : 'fas fa-times';
+    icon.setAttribute('aria-hidden', 'true');
+    mobileToggle.appendChild(icon);
   });
 
   mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mobileMenu.style.display = 'none';
-      mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+      mobileToggle.textContent = '';
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-bars';
+      icon.setAttribute('aria-hidden', 'true');
+      mobileToggle.appendChild(icon);
     });
   });
 
@@ -1531,15 +1709,25 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
     document.getElementById('deals').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
-  document.getElementById('buyDeal').addEventListener('click', function() {
+  document.getElementById('buyDeal').addEventListener('click', function () {
     cartCount++;
     updateCartCount();
-    const orig = this.innerHTML;
-    this.innerHTML = '<i class="fas fa-check"></i> Added!';
-    this.style.background = 'var(--success)';
+    const btn = this;
+    btn.textContent = '';
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-check';
+    icon.setAttribute('aria-hidden', 'true');
+    btn.appendChild(icon);
+    btn.appendChild(document.createTextNode(' Added!'));
+    btn.style.background = 'var(--success)';
     setTimeout(() => {
-      this.innerHTML = orig;
-      this.style.background = '';
+      btn.textContent = '';
+      const bag = document.createElement('i');
+      bag.className = 'fas fa-bag-shopping';
+      bag.setAttribute('aria-hidden', 'true');
+      btn.appendChild(bag);
+      btn.appendChild(document.createTextNode(' Add to cart'));
+      btn.style.background = '';
     }, 1600);
   });
 
@@ -1559,11 +1747,12 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
     setTimeout(() => { newsletterMsg.style.display = 'none'; }, 3500);
   });
 
-  document.getElementById('cartBtn').addEventListener('click', () => {
-    alert(`🛒 Your cart has ${cartCount} item${cartCount !== 1 ? 's' : ''}.`);
+  cartBtn.addEventListener('click', () => {
+    const label = cartCount === 1 ? 'item' : 'items';
+    showToast('🛒 Your cart has ' + cartCount + ' ' + label + '.');
   });
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('year').textContent = String(new Date().getFullYear());
 
   // ============================================================
   // INIT
@@ -1572,16 +1761,18 @@ Here is the complete, ready-to-run HTML file for the "NexusShop" e-commerce home
   renderProducts(PRODUCTS);
   renderTestimonials();
   updateCartCount();
+  setupDealTimer();
 
   window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
       mobileMenu.style.display = 'none';
-      mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+      mobileToggle.textContent = '';
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-bars';
+      icon.setAttribute('aria-hidden', 'true');
+      mobileToggle.appendChild(icon);
     }
   });
-
-  console.log('🚀 NexusShop — modern e‑commerce demo loaded.');
 </script>
 </body>
 </html>
-```
