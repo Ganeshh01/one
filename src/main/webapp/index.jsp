@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="true" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,7 +21,6 @@
             --muted-light: #64748b;
             --accent: #ff5e62;
             --accent-gradient: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
-            --purple-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             --glass-bg: rgba(30, 34, 53, 0.75);
             --glass-border: rgba(255, 255, 255, 0.08);
             --success: #10b981;
@@ -41,11 +40,6 @@
         @keyframes pulseGlow {
             0%, 100% { box-shadow: 0 0 15px rgba(255, 94, 98, 0.3); }
             50% { box-shadow: 0 0 35px rgba(255, 94, 98, 0.7); }
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(200%); }
         }
 
         @keyframes toastIn {
@@ -363,16 +357,6 @@
             border-radius: 999px;
             text-transform: uppercase;
         }
-        .wishlist-btn {
-            position: absolute;
-            top: 14px; right: 14px;
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            background: rgba(15, 17, 26, 0.7);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            display: grid; place-items: center;
-        }
         .product-info { padding: 20px; display: flex; flex-direction: column; flex: 1; }
         .product-category { font-size: 12px; color: var(--accent); font-weight: 700; text-transform: uppercase; }
         .product-title { font-size: 16px; font-weight: 700; margin: 6px 0 12px; }
@@ -656,7 +640,7 @@
 
     <!-- ===== JAVASCRIPT ===== -->
     <script>
-        const CATEGORIES = [
+        var CATEGORIES = [
             { id: 'smartphones', name: 'Smartphones', icon: 'fa-mobile-alt', count: '28 Items' },
             { id: 'laptops', name: 'Laptops', icon: 'fa-laptop', count: '16 Items' },
             { id: 'audio', name: 'Audio Gear', icon: 'fa-headphones-alt', count: '34 Items' },
@@ -665,122 +649,154 @@
             { id: 'cameras', name: 'Cameras', icon: 'fa-camera-retro', count: '15 Items' }
         ];
 
-        const PRODUCTS = [
+        var PRODUCTS = [
             { id: 1, title: 'iPhone 15 Pro Max', price: 1199, category: 'Smartphones', tag: 'New', img: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80' },
             { id: 2, title: 'Sony WH-1000XM5', price: 399, category: 'Audio Gear', tag: 'Bestseller', img: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80' },
             { id: 3, title: 'Apple Watch Ultra 2', price: 799, category: 'Wearables', tag: 'Hot', img: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=600&q=80' },
             { id: 4, title: 'ASUS ROG Gaming Laptop', price: 2199, category: 'Laptops', tag: 'Sale', img: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80' }
         ];
 
-        let cartState = [];
-        let wishlistState = new Set();
+        var cartState = [];
 
         function renderCategories() {
-            const container = document.getElementById('categoriesGrid');
-            container.innerHTML = CATEGORIES.map((cat) => `
-                <div class="cat-card reveal">
-                    <div class="cat-icon"><i class="fas \${cat.icon}"></i></div>
-                    <h4>\${cat.name}</h4>
-                    <span>\${cat.count}</span>
-                </div>
-            `).join('');
+            var container = document.getElementById('categoriesGrid');
+            var html = '';
+            for (var i = 0; i < CATEGORIES.length; i++) {
+                var cat = CATEGORIES[i];
+                html += '<div class="cat-card reveal">' +
+                            '<div class="cat-icon"><i class="fas ' + cat.icon + '"></i></div>' +
+                            '<h4>' + cat.name + '</h4>' +
+                            '<span>' + cat.count + '</span>' +
+                        '</div>';
+            }
+            container.innerHTML = html;
         }
 
-        function renderProducts(list = PRODUCTS) {
-            const container = document.getElementById('productsGrid');
-            container.innerHTML = list.map((p) => `
-                <div class="product-card reveal">
-                    <div class="product-img-wrap">
-                        <img src="\${p.img}" alt="\${p.title}" loading="lazy" />
-                        <span class="product-tag">\${p.tag}</span>
-                    </div>
-                    <div class="product-info">
-                        <span class="product-category">\${p.category}</span>
-                        <h4 class="product-title">\${p.title}</h4>
-                        <div class="product-meta">
-                            <div class="product-price">$\${p.price}</div>
-                            <button class="add-cart-btn" onclick="addToCart(\${p.id})">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        function renderProducts(list) {
+            if (!list) list = PRODUCTS;
+            var container = document.getElementById('productsGrid');
+            var html = '';
+            for (var i = 0; i < list.length; i++) {
+                var p = list[i];
+                html += '<div class="product-card reveal">' +
+                            '<div class="product-img-wrap">' +
+                                '<img src="' + p.img + '" alt="' + p.title + '" loading="lazy" />' +
+                                '<span class="product-tag">' + p.tag + '</span>' +
+                            '</div>' +
+                            '<div class="product-info">' +
+                                '<span class="product-category">' + p.category + '</span>' +
+                                '<h4 class="product-title">' + p.title + '</h4>' +
+                                '<div class="product-meta">' +
+                                    '<div class="product-price">$' + p.price + '</div>' +
+                                    '<button class="add-cart-btn" onclick="addToCart(' + p.id + ')">' +
+                                        '<i class="fas fa-plus"></i>' +
+                                    '</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+            }
+            container.innerHTML = html;
             initScrollObserve();
         }
 
         function addToCart(productId) {
-            const product = PRODUCTS.find(p => p.id === productId) || { id: 99, title: 'MacBook Air M2 Pro', price: 999, img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80' };
-            const existing = cartState.find(item => item.id === product.id);
+            var product = null;
+            for (var i = 0; i < PRODUCTS.length; i++) {
+                if (PRODUCTS[i].id === productId) {
+                    product = PRODUCTS[i];
+                    break;
+                }
+            }
+            if (!product) {
+                product = { id: 99, title: 'MacBook Air M2 Pro', price: 999, img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80' };
+            }
+
+            var existing = null;
+            for (var j = 0; j < cartState.length; j++) {
+                if (cartState[j].id === product.id) {
+                    existing = cartState[j];
+                    break;
+                }
+            }
 
             if (existing) {
                 existing.qty += 1;
             } else {
-                cartState.push(Object.assign({}, product, { qty: 1 }));
+                cartState.push({ id: product.id, title: product.title, price: product.price, img: product.img, qty: 1 });
             }
             updateCartUI();
             showToast('Added item to shopping cart!');
         }
 
         function updateCartUI() {
-            const totalQty = cartState.reduce((sum, item) => sum + item.qty, 0);
-            const subtotal = cartState.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            var totalQty = 0;
+            var subtotal = 0;
+            for (var i = 0; i < cartState.length; i++) {
+                totalQty += cartState[i].qty;
+                subtotal += (cartState[i].price * cartState[i].qty);
+            }
 
             document.getElementById('cartCount').textContent = totalQty;
             document.getElementById('cartDrawerCount').textContent = totalQty;
             document.getElementById('cartSubtotal').textContent = '$' + subtotal.toLocaleString();
 
-            const listContainer = document.getElementById('cartItemsList');
+            var listContainer = document.getElementById('cartItemsList');
             if (cartState.length === 0) {
                 listContainer.innerHTML = '<div style="text-align:center;color:var(--muted);padding:40px 0;">Cart is empty.</div>';
             } else {
-                listContainer.innerHTML = cartState.map(item => `
-                    <div style="display:flex;align-items:center;gap:14px;background:var(--bg-card);padding:12px;border-radius:12px;">
-                        <img src="\${item.img}" alt="\${item.title}" style="width:50px;height:50px;border-radius:8px;object-fit:cover;" />
-                        <div>
-                            <div style="font-weight:700;font-size:14px;">\${item.title}</div>
-                            <div style="color:var(--accent);font-weight:800;">$\${item.price} x \${item.qty}</div>
-                        </div>
-                    </div>
-                `).join('');
+                var html = '';
+                for (var k = 0; k < cartState.length; k++) {
+                    var item = cartState[k];
+                    html += '<div style="display:flex;align-items:center;gap:14px;background:var(--bg-card);padding:12px;border-radius:12px;">' +
+                                '<img src="' + item.img + '" alt="' + item.title + '" style="width:50px;height:50px;border-radius:8px;object-fit:cover;" />' +
+                                '<div>' +
+                                    '<div style="font-weight:700;font-size:14px;">' + item.title + '</div>' +
+                                    '<div style="color:var(--accent);font-weight:800;">$' + item.price + ' x ' + item.qty + '</div>' +
+                                '</div>' +
+                            '</div>';
+                }
+                listContainer.innerHTML = html;
             }
         }
 
         function showToast(message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
+            var container = document.getElementById('toastContainer');
+            var toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = '<i class="fas fa-check-circle"></i> <span>' + message + '</span>';
             container.appendChild(toast);
-            setTimeout(() => {
+            setTimeout(function() {
                 toast.style.animation = 'toastOut 0.4s forwards';
-                setTimeout(() => toast.remove(), 400);
+                setTimeout(function() { toast.remove(); }, 400);
             }, 3000);
         }
 
         function initScrollObserve() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
+            var observer = new IntersectionObserver(function(entries) {
+                for (var i = 0; i < entries.length; i++) {
+                    if (entries[i].isIntersecting) {
+                        entries[i].target.classList.add('active');
                     }
-                });
+                }
             }, { threshold: 0.1 });
 
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            var reveals = document.querySelectorAll('.reveal');
+            for (var j = 0; j < reveals.length; j++) {
+                observer.observe(reveals[j]);
+            }
         }
 
         function startCountdown() {
-            const target = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
-            setInterval(() => {
-                const now = new Date().getTime();
-                const diff = target - now;
+            var target = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
+            setInterval(function() {
+                var now = new Date().getTime();
+                var diff = target - now;
                 if (diff <= 0) return;
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+                var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                var secs = Math.floor((diff % (1000 * 60)) / 1000);
 
                 document.getElementById('dealDays').textContent = String(days).padStart(2, '0');
                 document.getElementById('dealHours').textContent = String(hours).padStart(2, '0');
@@ -789,22 +805,22 @@
             }, 1000);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             renderCategories();
             renderProducts();
             initScrollObserve();
             startCountdown();
             document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-            const cartOverlay = document.getElementById('cartOverlay');
-            document.getElementById('cartDrawerBtn').addEventListener('click', () => cartOverlay.classList.add('active'));
-            document.getElementById('closeCart').addEventListener('click', () => cartOverlay.classList.remove('active'));
-            document.getElementById('claimDealBtn').addEventListener('click', () => addToCart(99));
+            var cartOverlay = document.getElementById('cartOverlay');
+            document.getElementById('cartDrawerBtn').addEventListener('click', function() { cartOverlay.classList.add('active'); });
+            document.getElementById('closeCart').addEventListener('click', function() { cartOverlay.classList.remove('active'); });
+            document.getElementById('claimDealBtn').addEventListener('click', function() { addToCart(99); });
 
-            document.getElementById('shopNow').addEventListener('click', () => {
+            document.getElementById('shopNow').addEventListener('click', function() {
                 document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
             });
-            document.getElementById('exploreDeals').addEventListener('click', () => {
+            document.getElementById('exploreDeals').addEventListener('click', function() {
                 document.getElementById('deals').scrollIntoView({ behavior: 'smooth' });
             });
         });
